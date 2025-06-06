@@ -6,10 +6,10 @@ import (
 	"time"
 )
 
-func New(address string, maxOpenConnections int, maxIdleConnections int, maxIdleTime string) (*sql.DB, error) {
+func New(address string, maxOpenConnections int, maxIdleConnections int, maxIdleTime string) *sql.DB {
 	db, err := sql.Open("postgres", address)
 	if err != nil {
-		return nil, err
+		return nil
 	}
 
 	db.SetMaxOpenConns(maxOpenConnections)
@@ -17,7 +17,7 @@ func New(address string, maxOpenConnections int, maxIdleConnections int, maxIdle
 
 	duration, err := time.ParseDuration(maxIdleTime)
 	if err != nil {
-		return nil, err
+		return nil
 	}
 	db.SetConnMaxIdleTime(duration)
 
@@ -25,8 +25,8 @@ func New(address string, maxOpenConnections int, maxIdleConnections int, maxIdle
 	defer cancel()
 
 	if err = db.PingContext(ctx); err != nil {
-		return nil, err
+		return nil
 	}
 
-	return db, err
+	return db
 }

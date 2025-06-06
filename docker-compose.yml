@@ -19,7 +19,7 @@ services:
     image: migrate/migrate
     container_name: db-migrate
     env_file:
-      - .env
+      - config.env
     depends_on:
       - db
     volumes:
