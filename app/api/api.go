@@ -44,16 +44,32 @@ func (api *Application) Mount() http.Handler {
 		w.Write([]byte("welcome"))
 	})
 
-	//health + stats
-	r.Route("/"+api.Config.Version, func(r chi.Router) {
+	// API routes
+	r.Route("/api", func(r chi.Router) {
+		// Swagger UI
+		r.Get("/docs", api.SwaggerHandler)
+		r.Get("/docs/swagger.json", api.SwaggerJSONHandler)
+
+		// Health check
 		r.Get("/health", api.HealthCheckHandler)
+
+		// Deck routes
+		r.Route("/decks", func(r chi.Router) {
+			r.Get("/", api.GetDecksHandler)
+			r.Post("/", api.CreateDeckHandler)
+			r.Get("/featured", api.GetFeatureDecksHandler)
+
+			r.Route("/{id}", func(r chi.Router) {
+				r.Get("/", api.GetDeckHandler)
+				r.Put("/", api.UpdateDeckHandler)
+				r.Delete("/", api.DeleteDeckHandler)
+				r.Get("/cards", api.GetDeckCardsHandler)
+			})
+		})
+
+		// Activity routes
+		r.Get("/activity", api.GetRecentActivityHandler)
 	})
-
-	//cards
-
-	//users
-
-	//auth
 
 	return r
 }

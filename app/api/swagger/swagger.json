@@ -1,0 +1,342 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "GoCard API",
+    "description": "API for the GoCard flashcard application",
+    "version": "1.0.0"
+  },
+  "host": "localhost:3001",
+  "basePath": "/api",
+  "schemes": ["http"],
+  "paths": {
+    "/health": {
+      "get": {
+        "summary": "Get API health status",
+        "description": "Returns the current health status of the API",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "schema": {
+              "$ref": "#/definitions/HealthResponse"
+            }
+          }
+        }
+      }
+    },
+    "/decks": {
+      "get": {
+        "summary": "Get all decks",
+        "description": "Returns a list of all decks",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Deck"
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a new deck",
+        "description": "Creates a new deck with the provided information",
+        "parameters": [
+          {
+            "name": "deck",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CreateDeckRequest"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Deck created successfully",
+            "schema": {
+              "$ref": "#/definitions/Deck"
+            }
+          }
+        }
+      }
+    },
+    "/decks/{id}": {
+      "get": {
+        "summary": "Get deck by ID",
+        "description": "Returns a specific deck by its ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "schema": {
+              "$ref": "#/definitions/Deck"
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Update deck",
+        "description": "Updates an existing deck",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "deck",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UpdateDeckRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Deck updated successfully",
+            "schema": {
+              "$ref": "#/definitions/Deck"
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete deck",
+        "description": "Deletes a deck by its ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Deck deleted successfully"
+          }
+        }
+      }
+    },
+    "/decks/{id}/cards": {
+      "get": {
+        "summary": "Get deck cards",
+        "description": "Returns all cards in a specific deck",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Card"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/decks/featured": {
+      "get": {
+        "summary": "Get featured decks",
+        "description": "Returns a list of featured decks",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Deck"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/activity": {
+      "get": {
+        "summary": "Get recent activity",
+        "description": "Returns a list of recent activities",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Activity"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "HealthResponse": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": ["healthy", "unhealthy"]
+        },
+        "version": {
+          "type": "string"
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "Deck": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "title": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "category": {
+          "type": "string"
+        },
+        "cardCount": {
+          "type": "integer"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "createdBy": {
+          "type": "string"
+        },
+        "views": {
+          "type": "integer"
+        },
+        "likes": {
+          "type": "integer"
+        }
+      }
+    },
+    "Card": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "front": {
+          "type": "string"
+        },
+        "back": {
+          "type": "string"
+        },
+        "lastReviewed": {
+          "type": "string",
+          "format": "date-time",
+          "nullable": true
+        },
+        "nextReview": {
+          "type": "string",
+          "format": "date-time",
+          "nullable": true
+        }
+      }
+    },
+    "Activity": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "user": {
+          "type": "string"
+        },
+        "action": {
+          "type": "string"
+        },
+        "deckId": {
+          "type": "integer"
+        },
+        "deckTitle": {
+          "type": "string"
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "CreateDeckRequest": {
+      "type": "object",
+      "required": ["title", "description", "category", "cards"],
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "category": {
+          "type": "string"
+        },
+        "cards": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/CreateCardRequest"
+          }
+        }
+      }
+    },
+    "CreateCardRequest": {
+      "type": "object",
+      "required": ["front", "back"],
+      "properties": {
+        "front": {
+          "type": "string"
+        },
+        "back": {
+          "type": "string"
+        }
+      }
+    },
+    "UpdateDeckRequest": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "category": {
+          "type": "string"
+        }
+      }
+    }
+  }
+} 
