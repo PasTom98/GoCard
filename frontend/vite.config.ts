@@ -7,5 +7,18 @@ export default defineConfig({
   base: './',
   build: {
     outDir: 'dist-react',
+  },
+  server: {
+    port: 5173,
+    host: 'localhost',
+    strictPort: false,
+    hmr: {
+      port: 5174,
+      host: 'localhost'
+    },
+    watch: {
+      usePolling: true,
+      interval: 1000
+    }
   }
 })
