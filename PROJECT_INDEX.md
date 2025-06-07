@@ -192,7 +192,7 @@ Docker & Docker Compose
 - Docker registry (container images)
 - Package managers (Go modules, npm)
 
-## 🛠️ Development Workflow
+##  Development Workflow
 
 ### Local Development
 1. Environment setup (`.env` configuration)
@@ -214,7 +214,7 @@ Docker & Docker Compose
 4. Container building
 5. Service deployment
 
-## ✅ Quality Assurance
+##  Quality Assurance
 
 ### Code Quality Tools
 - **Go**: `go fmt`, `go vet`, `go test`
